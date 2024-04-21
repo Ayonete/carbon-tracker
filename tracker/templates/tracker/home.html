@@ -6,10 +6,6 @@
     <div style="max-width: 600px; margin: auto;">
         <canvas id="footprintChart" width="400" height="200"></canvas>
     </div>
-    
-
-
-    
     <!-- Add Activity Button -->
     <a href="{% url 'add-record' %}" class="btn btn-primary mb-3">Add Activity</a>
 
@@ -41,7 +37,28 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
+    <h2>Recycling Center Near You</h2>
+  <script>
+    function initMap() {
+      var mapOptions = {
+        zoom: 30, // Adjust the zoom level as needed
+        center: {lat: 53.355405375989285, lng: -6.244291158371104} // The specific coordinates you provided
+      };
+      var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+      // Add a marker at the exact location
+      var marker = new google.maps.Marker({
+        position: mapOptions.center,
+        map: map,
+        title: 'North Strand Recycling center' // Optionally, add a title for the marker
+      });
+    }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0vAyx8_nHAnWrTFrSwJBpClcz1x74rY8&callback=initMap">
+</script>
+  
+  
+<div id="map" style="height:400px; width:100%;"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

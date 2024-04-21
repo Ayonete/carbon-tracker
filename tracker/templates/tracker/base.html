@@ -24,7 +24,7 @@
                 <ul class="navbar-nav text-light" id="accordionSidebar">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="fas fa-tachometer-alt"></i><span>Home</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'add-record' %}"><i class="fas fa-user"></i><span>Add Activity</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-table"></i><span>Download Resources</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% static '/images/info.pdf' %}" download="Info"><i class="fas fa-table"></i><span>Download Resources</span></a></li>
                     
                 
                 </ul>
@@ -39,8 +39,8 @@
                         <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <div class ="d-flex ms-auto">
                             {% if user.is_authenticated %}
-                                <span class="navbar-text me-2">Hello {{ user.username }}
-                                <a class="nav-link" href="{% url 'sign_out' %}">Sign out</a></span>
+                                <span class="navbar-text me-2">Hello <b>{{ user.username }}</b>
+                                <a class="nav-link" href="{% url 'sign_out' %}">Sign out </a></span>
                             {% else %}
                                 <a class="nav-link me-2" href="{% url 'sign_in' %}">Sign in</a>
                                 <a class="nav-link" href="{% url 'sign_up' %}">Sign up</a>
@@ -58,14 +58,82 @@
                 
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
-                    <div class="text-center my-auto copyright">Ayonete Icha | MSc Cloud Computing 2024 | Scalable Cloud Programming</div>
+                    <!-- <div class="text-center my-auto copyright">Ayonete Icha | MSc Cloud Computing 2024 | Scalable Cloud Programming</div> -->
                     
+                    <div id="time-display"></div>
+                        <select id="timezone-select" label="TimeZones">
+                            <!-- Options will be populated here by populateTimezones function -->
+                         </select>  
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/theme.js' %}"></script>
+    <script>
+                
+        // Function to update time display
+        function updateTimeDisplay(time) {
+            document.getElementById('time-display').textContent = time;
+        }
+
+        // Function to get current time and update display
+        function displayLocalTime() {
+            const now = new Date();
+            updateTimeDisplay(now.toLocaleTimeString());
+        }
+
+        // Call this function initially and then every second
+        displayLocalTime();
+        setInterval(displayLocalTime, 1000);
+
+        // Function to convert time when a new timezone is selected
+        function convertTimezone() {
+            const originalTime = new Date().toISOString();
+            const originalTimezone = 'UTC'; // Assuming the server's timezone is UTC
+            const targetTimezone = document.getElementById('timezone-select').value;
+
+            fetch('https://ptvplqzlhh6754nlgl4kdwzuhq0vblxi.lambda-url.eu-west-1.on.aws/convert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    originalTime: originalTime, 
+                    originalTimezone: 'UTC', 
+                    targetTimezone 
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateTimeDisplay(data.convertedTime); // Assume your API returns a 'convertedTime' field
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Event listener for timezone selection change
+        document.getElementById('timezone-select').addEventListener('change', convertTimezone);
+
+        // Function to populate timezone options from API
+        function populateTimezones() {
+            fetch('https://ptvplqzlhh6754nlgl4kdwzuhq0vblxi.lambda-url.eu-west-1.on.aws/timezones')
+            .then(response => response.json())
+            .then(data => {
+                const timezoneSelect = document.getElementById('timezone-select');
+                data.timezones.forEach(timezone => { // Assume your API returns a 'timezones' array
+                    const option = document.createElement('option');
+                    option.value = timezone;
+                    option.textContent = timezone;
+                    timezoneSelect.appendChild(option);
+                });
+                convertTimezone();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Call this function to populate timezones on page load
+        populateTimezones();
+    </script>
 </body>
 
 </html>

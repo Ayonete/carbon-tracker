@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from .calculations import calculate_individual_footprint, calculate_grade
 
+
 class CarbonFootprintRecord(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     date_recorded = models.DateTimeField(auto_now_add=True)

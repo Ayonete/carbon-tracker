@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
+from django.forms import ModelForm
+from .models import UserProfile
 
 class UserSignUpForm(UserCreationForm):
     email = forms.EmailField(validators=[validators.validate_email])
@@ -38,3 +40,7 @@ class UserSignUpForm(UserCreationForm):
         return user
     
 
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['timezone']
