@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'tracker.apps.TrackerConfig',
+    'users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,7 +69,7 @@ TEMPLATES = [
         },
     },
 ]
-
+STATICFILE_DIRS = [os.path.join(BASE_DIR, 'static')]
 WSGI_APPLICATION = 'carbontracker.wsgi.application'
 
 
@@ -117,7 +120,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = '/images/'
+
+MEDIA_ROOT = BASE_DIR / 'static/'
+
+STATICFILES_DIRS = [ BASE_DIR / 'static' ]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'

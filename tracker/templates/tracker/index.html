@@ -1,0 +1,26 @@
+<!-- inheriting from the base file -->
+{% extends 'tracker/base.html' %}
+
+<!-- this will help render the images -->
+{% load static %}
+
+{% block content %}
+
+<h1>Carbon Tracker</h1>
+{% if records %}
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Carbon</th>
+        </tr>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.time }}</td>
+                <td>{{ record.carbon }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No records found.</p>
+{% endif %}
+{% endblock %}

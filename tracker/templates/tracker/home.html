@@ -1,0 +1,70 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<div class="container-fluid" >
+    <h2 class="title">Welcome {{ user.username }}!</h2>
+    <div style="max-width: 600px; margin: auto;">
+        <canvas id="footprintChart" width="400" height="200"></canvas>
+    </div>
+    
+
+
+    
+    <!-- Add Activity Button -->
+    <a href="{% url 'add-record' %}" class="btn btn-primary mb-3">Add Activity</a>
+
+    <!-- Records Table -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date Recorded</th>
+                <th>Total Footprint</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.date_recorded }}</td>
+                <td>{{ record.total_footprint|floatformat:2 }}</td>
+                <td>{{ record.grade }}</td> 
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('footprintChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: JSON.parse('{{ dates|safe }}'),
+            datasets: [{
+                label: 'Total Footprint',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                data: JSON.parse('{{ footprints|safe }}'),
+                fill: false,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+        }
+    });
+</script>
+
+{% endblock %}
