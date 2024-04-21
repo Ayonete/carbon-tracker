@@ -11,6 +11,7 @@ from datetime import datetime
 from .calculations import calculate_individual_footprint
 from .models import CarbonFootprintRecord
 import json
+from django.shortcuts import get_object_or_404, redirect
 # Create your views here.
 
 
@@ -36,3 +37,28 @@ def add_record(request):
         form = addFootprintForm()
     return render(request, 'tracker/add_record.html', {'form': form})
 
+# views.py
+
+
+def edit_record(request, record_id):
+    record = get_object_or_404(CarbonFootprintRecord, pk=record_id, user=request.user)
+    
+    if request.method == 'POST':
+        form = addFootprintForm(request.POST, instance=record)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = addFootprintForm(instance=record)
+    
+    return render(request, 'tracker/edit_record.html', {'form': form})
+
+
+# views.py
+from django.views.decorators.http import require_POST
+
+@require_POST
+def delete_record(request, record_id):
+    record = get_object_or_404(CarbonFootprintRecord, pk=record_id, user=request.user)
+    record.delete()
+    return redirect('home')
