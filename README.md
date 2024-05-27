@@ -10,7 +10,7 @@ _ Installation_
 To set up the Carbon Footprint Tracker locally, you need Python and Django installed on your system.
 
 1. Clone the repository:
-git clone https://yourrepositorylink.comhttps://github.com/Ayonete/carbon-tracker.git
+git clone https://github.com/Ayonete/carbon-tracker.git
 
 2. Navigate to the project directory:
 cd carbon_TRACKER
