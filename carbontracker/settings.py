@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-c&+1f+yjn3nte%e4-$1w8^tv+m5n@9@4wcb5h3tiq5ce!!jm_6
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSFR_TRUSTED_ORIGINS = ['https://carbon-tracker-production.up.railway.app']
 
 # Application definition
 
