@@ -6,8 +6,8 @@ from django.forms import ModelForm
 from .models import UserProfile
 
 class UserSignUpForm(UserCreationForm):
-    email = forms.EmailField(validators=[validators.validate_email])
-    
+    #email = forms.EmailField(validators=[validators.validate_email])
+    email = forms.EmailField(required=False)
     
     min_length = 2
     max_length = 30

@@ -140,3 +140,6 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGIN_URL = '/signin/'
 
+# Add this to your settings.py
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
