@@ -32,13 +32,6 @@ After installation, navigate to http://127.0.0.1:8000/ in your web browser to st
 - Real-time footprint analysis
 - Tips for reducing environmental impact
 
- Contributing
-
-Contributions to the Carbon Footprint Tracker are welcome! Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
-
- Contact
-
-Your Name - ayonete
 
 Project Link: (https://github.com/Ayonete/carbon-tracker.git)
 
