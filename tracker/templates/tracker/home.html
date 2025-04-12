@@ -41,15 +41,15 @@
   <script>
     function initMap() {
       var mapOptions = {
-        zoom: 30, // Adjust the zoom level as needed
-        center: {lat: 53.355405375989285, lng: -6.244291158371104} // The specific coordinates you provided
+        zoom: 30, 
+        center: {lat: 53.355405375989285, lng: -6.244291158371104} 
       };
       var map = new google.maps.Map(document.getElementById('map'), mapOptions);
       // Add a marker at the exact location
       var marker = new google.maps.Marker({
         position: mapOptions.center,
         map: map,
-        title: 'North Strand Recycling center' // Optionally, add a title for the marker
+        title: 'North Strand Recycling center' 
       });
     }
   </script>

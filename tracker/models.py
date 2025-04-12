@@ -1,10 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
 from .calculations import calculate_individual_footprint, calculate_grade
 
-
 class CarbonFootprintRecord(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     date_recorded = models.DateTimeField(auto_now_add=True)
     household_size = models.IntegerField()
 
@@ -41,17 +38,15 @@ class CarbonFootprintRecord(models.Model):
     meat_type = models.CharField(max_length=50, choices=[
         ('beef', 'Beef'),
         ('chicken', 'Chicken'),
-    ], null=True, blank=True)  # Nullable as it might not apply to plant-based diets
+    ], null=True, blank=True)
     meat_dairy_eggs_kg = models.FloatField()
     fruits_vegetables_kg = models.FloatField()
 
     # Calculated footprint
-    total_footprint = models.FloatField(editable=False, null=True, blank=True)  # Not editable because it's set programmatically
+    total_footprint = models.FloatField(editable=False, null=True, blank=True)
     grade = models.CharField(editable=False, null=True, max_length=50)
 
     def save(self, *args, **kwargs):
-        # Call the calculate_individual_footprint function here to calculate the total_footprint
-        # before saving the model instance. You might need to import the function.
         self.total_footprint = calculate_individual_footprint(
             household_size=self.household_size,
             diet_type=self.diet_type,
@@ -71,10 +66,9 @@ class CarbonFootprintRecord(models.Model):
 
         self.grade = calculate_grade(self.total_footprint)
         super().save(*args, **kwargs)
-    
 
     def __str__(self):
-        return f"Carbon Footprint Record for {self.user.username} on {self.date_recorded.strftime('%Y-%m-%d')} and total footprint of {self.total_footprint}"
-    
+        return f"Carbon Footprint Record on {self.date_recorded.strftime('%Y-%m-%d')} — {self.total_footprint} kg CO₂"
+
     class Meta:
         ordering = ['-date_recorded']
